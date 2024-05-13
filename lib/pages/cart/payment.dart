@@ -1,0 +1,170 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+
+import '../../main.dart';
+import '../../widgets/elevated_button.dart';
+import '../../widgets/text_form_field.dart';
+
+class BuyNow extends StatefulWidget {
+  const BuyNow({super.key});
+
+  @override
+  State<BuyNow> createState() => _BuyNowState();
+}
+
+class _BuyNowState extends State<BuyNow> {
+  final buyKey = GlobalKey<FormState>();
+  TextEditingController _name = TextEditingController();
+  TextEditingController _phone = TextEditingController();
+  TextEditingController _total = TextEditingController();
+  TextEditingController _bank = TextEditingController();
+  TextEditingController _account = TextEditingController();
+
+  late bool status;
+  late String message;
+
+  @override
+  void initState() {
+    _name = TextEditingController();
+    _phone = TextEditingController();
+    _total = TextEditingController();
+    _bank = TextEditingController();
+    _account = TextEditingController();
+    status = false;
+    message = '';
+    super.initState();
+  }
+
+  Future<void> payment() async {
+    var url = "http://$iPAddress/Hope/payment.php";
+    Map<String, String> mapedData = {
+      'name': _name.text.trim(),
+      'phone': _phone.text.trim(),
+      'bank': _bank.text.trim(),
+      'ac_no': _account.text.trim(),
+      'total_amt': _total.text.trim(),
+      'uid': uidUser,
+    };
+    http.Response response = await http.post(Uri.parse(url), body: mapedData);
+    if (response.body.isEmpty) {
+      if (mounted) {
+        setState(() {
+          status = false;
+          message = 'Empty response from the server.';
+        });
+      }
+    } else {
+      var data = jsonDecode(response.body);
+      var responseMessage = data["message"];
+      var responseError = data["error"];
+      if (responseError) {
+        if (mounted) {
+          setState(() {
+            status = false;
+            message = responseMessage;
+          });
+        }
+      } else {
+        _name.clear();
+        _phone.clear();
+        _total.clear();
+        _bank.clear();
+        _account.clear();
+        if (mounted) {
+          setState(() {
+            status = true;
+            message = responseMessage;
+          });
+        }
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('P A Y M E N T'),
+      ),
+      body: Form(
+        key: buyKey,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TFF(
+                controller: _name,
+                hintText: 'Name',
+                focus: true,
+                textCapitalization: TextCapitalization.sentences,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Name cannot be empty";
+                  }
+                },
+              ),
+              TFF(
+                controller: _phone,
+                hintText: 'Phone number',
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Phone number cannot be empty";
+                  }
+                },
+              ),
+              TFF(
+                controller: _bank,
+                hintText: 'Bank name',
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Bank name cannot be empty";
+                  }
+                },
+              ),
+              TFF(
+                controller: _account,
+                hintText: 'Account number',
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.done,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Bank name cannot be empty";
+                  }
+                },
+              ),
+              TFF(
+                controller: _total,
+                hintText: 'Amount',
+                keyboardType: TextInputType.none,
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              ELB(
+                onPressed: () {
+                  if (buyKey.currentState!.validate()) {
+                    setState(() {
+                      payment();
+                      //Navigator.pop(context);
+                    });
+                  }
+                },
+                text: 'PAY',
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(status ? message : message)
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -12,13 +12,29 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('HOPE ORPHANAGE'),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ELB(
             text: 'USER',
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/splash1');
+            },
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          ELB(
+            text: 'ADMIN',
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                '/splash2',
+              );
+            },
           ),
         ],
       ),
