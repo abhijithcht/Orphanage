@@ -1,13 +1,13 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hope_orphanage/main.dart';
+import 'package:hope_orphanage/widgets/slidable.dart';
 import 'package:http/http.dart' as http;
 
 import '../../model/user_model.dart';
+import 'edit_craft_item.dart';
 
 class CraftDelete extends StatefulWidget {
   const CraftDelete({Key? key}) : super(key: key);
@@ -24,14 +24,11 @@ class _CraftDeleteState extends State<CraftDelete> {
     });
     var response = json.decode(res.body);
     if (response["success"] == "true") {
-      if (kDebugMode) {
-        print('success');
-      }
+      print('success');
     }
   }
 
   Future<List<CraftModel>> getRequest() async {
-    //replace your restFull API here.
     final response = await http.get(
       Uri.parse(
         "http://$iPAddress/Hope/admin_craft_display.php",
@@ -58,7 +55,31 @@ class _CraftDeleteState extends State<CraftDelete> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("C R A F T - S H O P"),
+        title: const Text("C R A F T - S H O P"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('INFO'),
+                      content: Text(
+                          'To update or delete the items swipe to the right on the tiles.'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Understood'),
+                        ),
+                      ],
+                    );
+                  });
+            },
+            icon: const Icon(Icons.info),
+          ),
+        ],
       ),
       body: FutureBuilder(
         future: getRequest(),
@@ -75,7 +96,7 @@ class _CraftDeleteState extends State<CraftDelete> {
               child: Text("Error: ${snapshot.error}"),
             );
           } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-            return Center(
+            return const Center(
               child: Text("No crafts available."),
             );
           } else {
@@ -83,63 +104,54 @@ class _CraftDeleteState extends State<CraftDelete> {
               shrinkWrap: true,
               itemCount: snapshot.data.length,
               itemBuilder: (ctx, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Card(
-                    child: ListTile(
-                      leading: Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          image: DecorationImage(
-                            image: NetworkImage(
-                              snapshot.data[index].image,
+                return Slidable(
+                  startActionPane: ActionPane(
+                    motion: const StretchMotion(),
+                    children: [
+                      CustomSlidable(onPressed: (context) async {
+                        await deleteData(snapshot.data[index].id);
+                        setState(() {});
+                      }),
+                      CustomSlidable(
+                        onPressed: (context) async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CraftEdit(
+                                craftUser: snapshot.data[index],
+                              ),
                             ),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      title: Text(
-                        "Craft Name: ${snapshot.data[index].name}",
-                      ),
-                      subtitle: Row(
-                        children: [
-                          Text(
-                            "Craft Price: ${snapshot.data[index].price}",
-                          ),
-                        ],
-                      ),
-                      trailing: IconButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text("Confirm Deletion"),
-                                content: Text(
-                                    "Are you sure you want to delete this craft?"),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text("Cancel"),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      deleteData(snapshot.data[index].id);
-                                      Navigator.of(context).pop();
-                                      setState(() {});
-                                    },
-                                    child: Text("Delete"),
-                                  ),
-                                ],
-                              );
-                            },
                           );
                         },
-                        icon: const Icon(Icons.delete),
+                        backgroundColor: Colors.blue,
+                        label: 'Edit',
+                        icon: Icons.edit,
+                      ),
+                    ],
+                  ),
+                  child: SizedBox(
+                    height: 100,
+                    child: Card(
+                      child: ListTile(
+                        leading: Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                snapshot.data[index].image,
+                              ),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        title: Text(
+                          snapshot.data[index].name,
+                        ),
+                        trailing: Text(
+                          "Price: ${snapshot.data[index].price}",
+                        ),
                       ),
                     ),
                   ),

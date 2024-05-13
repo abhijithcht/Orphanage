@@ -2,21 +2,21 @@
 
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hope_orphanage/pages/events/edit_events_admin.dart';
 import 'package:http/http.dart' as http;
+
 import '../../main.dart';
 import '../../model/user_model.dart';
 
-class EventView extends StatefulWidget {
-  const EventView({super.key});
+class EventView1 extends StatefulWidget {
+  const EventView1({super.key});
 
   @override
-  State<EventView> createState() => _EventViewState();
+  State<EventView1> createState() => _EventView1State();
 }
 
-class _EventViewState extends State<EventView> {
+class _EventView1State extends State<EventView1> {
   Future<List<EventModel>> getRequest() async {
     String url = "http://$iPAddress/Hope/admin_event_display.php";
     final response = await http.get(Uri.parse(url));
@@ -43,9 +43,7 @@ class _EventViewState extends State<EventView> {
     });
     var response = jsonDecode(res.body);
     if (response["success"] == "true") {
-      if (kDebugMode) {
-        print('success');
-      }
+      print('success');
     }
   }
 

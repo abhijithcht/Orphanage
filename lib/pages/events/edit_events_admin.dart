@@ -80,7 +80,6 @@ class _EventEditState extends State<EventEdit> {
       _description.clear();
       if (!mounted) return;
       Navigator.pop(context);
-      Navigator.pushReplacementNamed(context, '/view-event');
       const snackBar = SnackBar(
         content: Text('Data updated successfully'),
       );

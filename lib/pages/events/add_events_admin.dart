@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -68,9 +67,14 @@ class _EventAddState extends State<EventAdd> {
     }
   }
 
-  Future submit() async {
+  Future<void> submit() async {
+    if (!mounted) {
+      // Check if the widget is still in the tree before calling setState
+      return;
+    }
+
     var url = "http://$iPAddress/Hope/event_registration.php";
-    Map mapedData = {
+    Map<String, String> mapedData = {
       'name': _eventName.text.trim(),
       'event_date': _eventDate.text.trim(),
       'event_time': _eventTime.text.trim(),
@@ -78,41 +82,49 @@ class _EventAddState extends State<EventAdd> {
       'uid': 'admin',
     };
 
-    http.Response response = await http.post(Uri.parse(url), body: mapedData);
     try {
+      http.Response response = await http.post(Uri.parse(url), body: mapedData);
+
       if (response.body.isEmpty) {
-        setState(() {
-          status = false;
-          message = 'Empty response from the server.';
-        });
+        if (mounted) {
+          setState(() {
+            status = false;
+            message = 'Empty response from the server.';
+          });
+        }
       } else {
         var data = jsonDecode(response.body);
         var responseMessage = data["message"];
         var responseError = data["error"];
         if (responseError) {
-          setState(() {
-            status = false;
-            message = responseMessage;
-          });
+          if (mounted) {
+            setState(() {
+              status = false;
+              message = responseMessage;
+            });
+          }
         } else {
           _eventName.clear();
           _description.clear();
           _eventDate.clear();
           _eventTime.clear();
-          setState(() {
-            status = true;
-            message = responseMessage;
-          });
+          if (mounted) {
+            setState(() {
+              status = true;
+              message = responseMessage;
+            });
+          }
         }
       }
     } on FormatException catch (e) {
-      if (kDebugMode) {
-        print('Error decoding JSON: $e');
+      print('Error decoding JSON: $e');
+
+      if (mounted) {
+        setState(() {
+          status = false;
+          message = 'Check mapped data.';
+        });
       }
-      setState(() {
-        status = false;
-        message = 'check mapped data.';
-      });
     }
   }
 
@@ -192,12 +204,6 @@ class _EventAddState extends State<EventAdd> {
               const SizedBox(
                 height: 10,
               ),
-              // Text(
-              //   status ? message : message,
-              //   style: TextStyle(
-              //     color: status ? Colors.green : Colors.red,
-              //   ),
-              // ),
             ],
           ),
         ),

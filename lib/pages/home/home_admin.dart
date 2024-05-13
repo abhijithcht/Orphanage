@@ -9,12 +9,11 @@ class HomeAdmin extends StatefulWidget {
 }
 
 class _HomeAdminState extends State<HomeAdmin> {
-  // int _currentIndex = 0;
-  // final List _pages = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: const Text('A D M I N'),
         actions: [
           IconButton(
             onPressed: () async {
@@ -28,34 +27,88 @@ class _HomeAdminState extends State<HomeAdmin> {
           ),
         ],
       ),
-      drawer: const SafeArea(
+      drawer: SafeArea(
         child: Drawer(
           child: Column(
             children: [
-              ListTile(
-                title: Text('Add Events'),
+              UserAccountsDrawerHeader(
+                accountName: const Text('HOPE'),
+                accountEmail: const Text('ORPHANAGE'),
+                currentAccountPicture:
+                    Image.asset('assets/images/building.png'),
               ),
               ListTile(
-                title: Text('Delete Events'),
+                title: const Text('Add Events'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/add-event');
+                },
               ),
               ListTile(
-                title: Text('Edit Events'),
+                title: const Text('Update and Delete Events'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/delete-event');
+                },
               ),
               ListTile(
-                title: Text('Cancel food bookings'),
+                title: const Text('Cancel food bookings'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/food-cancel');
+                },
               ),
               ListTile(
-                title: Text('Add item to the craft shop'),
+                title: const Text('Add item to craft shop'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/add-craft');
+                },
               ),
               ListTile(
-                title: Text('Edit craft shop item'),
-              ),
-              ListTile(
-                title: Text('Remove craft shop item'),
+                title: const Text('Update craft shop item'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/delete-craft');
+                },
               ),
             ],
           ),
         ),
+      ),
+      body: Column(
+        children: [
+          Image.asset('assets/images/1.jpg'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/view-donate');
+                },
+                child: const Text('View Donations'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/food-view');
+                },
+                child: const Text('View Food Donations'),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/view-event');
+                },
+                child: const Text('View Events'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/craft2');
+                },
+                child: const Text('View Crafts'),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

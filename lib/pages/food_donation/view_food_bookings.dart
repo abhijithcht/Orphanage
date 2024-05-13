@@ -1,0 +1,95 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import '../../main.dart';
+import '../../model/user_model.dart';
+
+class FoodView extends StatefulWidget {
+  const FoodView({super.key});
+
+  @override
+  State<FoodView> createState() => _FoodViewState();
+}
+
+class _FoodViewState extends State<FoodView> {
+  Future<List<FoodModel>> getRequest() async {
+    String url = "http://$iPAddress/Hope/user_food_donation_display.php";
+    final response = await http.get(Uri.parse(url));
+    var responseData = jsonDecode(response.body);
+
+    List<FoodModel> foods = [];
+    for (var singleUser in responseData) {
+      FoodModel food = FoodModel(
+        id: singleUser["id"].toString(),
+        date: singleUser["date"].toString(),
+        donor: singleUser["donor"].toString(),
+        food: singleUser["food"].toString(),
+      );
+      foods.add(food);
+    }
+    return foods;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'F O O D -  D O N A T I O N S',
+        ),
+      ),
+      body: FutureBuilder(
+        future: getRequest(),
+        builder: (BuildContext ctx, AsyncSnapshot<List<FoodModel>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: Colors.red[900],
+                strokeWidth: 5,
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(
+              child: Text('No data available.'),
+            );
+          } else {
+            return ListView.builder(
+              itemCount: snapshot.data?.length,
+              itemBuilder: (ctx, index) => Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 5,
+                      right: 5,
+                      top: 5,
+                    ),
+                    child: Card(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              title: Text(snapshot.data![index].donor),
+                              leading: Text(snapshot.data![index].food),
+                              subtitle: Text(snapshot.data![index].date),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
+}

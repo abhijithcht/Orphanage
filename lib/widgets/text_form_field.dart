@@ -11,6 +11,7 @@ class TFF extends StatelessWidget {
   final dynamic textCapitalization;
   final bool obscure;
   final dynamic onSaved;
+  final bool focus;
 
   const TFF({
     super.key,
@@ -21,9 +22,10 @@ class TFF extends StatelessWidget {
     this.onTap,
     this.inputFormatters,
     this.textInputAction = TextInputAction.next,
-    this.textCapitalization = TextCapitalization.sentences,
+    this.textCapitalization = TextCapitalization.none,
     this.obscure = false,
     this.onSaved,
+    this.focus = false,
   });
 
   @override
@@ -45,6 +47,7 @@ class TFF extends StatelessWidget {
             controller: controller,
             validator: validator,
             obscureText: obscure,
+            autofocus: focus,
             onSaved: onSaved,
             decoration: InputDecoration(
               border: InputBorder.none,

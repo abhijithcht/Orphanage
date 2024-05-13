@@ -1,11 +1,11 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hope_orphanage/main.dart';
 import 'package:hope_orphanage/widgets/snackbar.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 
 import '../../widgets/elevated_button.dart';
 import '../../widgets/text_form_field.dart';
@@ -37,9 +37,7 @@ class _CraftAddState extends State<CraftAdd> {
 
       setState(() => _image = imageTemp);
     } on PlatformException catch (e) {
-      if (kDebugMode) {
-        print('Failed to pick image: $e');
-      }
+      print('Failed to pick image: $e');
     }
   }
 
@@ -53,9 +51,7 @@ class _CraftAddState extends State<CraftAdd> {
 
       setState(() => _image = imageTemp);
     } on PlatformException catch (e) {
-      if (kDebugMode) {
-        print('Failed to pick image: $e');
-      }
+      print('Failed to pick image: $e');
     }
   }
 
@@ -69,14 +65,11 @@ class _CraftAddState extends State<CraftAdd> {
     var pic = await http.MultipartFile.fromPath("image", _image.path);
     request.files.add(pic);
     var response = await request.send();
-    if (kDebugMode) {
-      print(response);
-    }
+    print(response);
 
     if (response.statusCode == 200) {
-      if (kDebugMode) {
-        print('Image Uploded');
-      }
+      print('Image Uploded');
+
       price.clear();
       name.clear();
       craftID.clear();
@@ -86,9 +79,7 @@ class _CraftAddState extends State<CraftAdd> {
       CSB.show(context, 'Craft Added Successfully');
       if (!mounted) return;
     } else {
-      if (kDebugMode) {
-        print('Image Not Uploded');
-      }
+      print('Image Not Uploded');
     }
     setState(() {});
   }
@@ -120,6 +111,7 @@ class _CraftAddState extends State<CraftAdd> {
               TFF(
                 hintText: "Craft Item name",
                 controller: name,
+                textCapitalization: TextCapitalization.sentences,
                 validator: (value) {
                   if (value.isEmpty) {
                     return "Craft Item cannot be empty";
@@ -140,6 +132,7 @@ class _CraftAddState extends State<CraftAdd> {
               TFF(
                 hintText: "Item description",
                 controller: description,
+                textCapitalization: TextCapitalization.sentences,
                 validator: (value) {
                   if (value.isEmpty) {
                     return "Description cannot be empty";

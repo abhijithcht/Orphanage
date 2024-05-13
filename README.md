@@ -1,16 +1,32 @@
 # hope_orphanage
 
-A new Flutter project.
+A flutter project on orphanage activities by administrators and normal users.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Sections:
 
-A few resources to get you started if this is your first Flutter project:
+1. Admin
+2. User
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Admin
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Signup, login and logout using php and mysql.
+2. Craft items - CRUD operations.
+3. View money donations and food donations.
+4. Cancel food donations.
+5. Orphanage events - CRUD operations.
+
+## User
+
+1. Signup, login and logout using php and mysql.
+2. Craft items - add to cart and purchase.
+3. Create money donations and food donations.
+4. Cancel food donations.
+5. Orphanage events - CRUD operations(user specific).
+
+# Basic
+
+1. Splash screen.
+2. Php and MySQL using XAMPP.
+3. Basic php coding with NotePad++.

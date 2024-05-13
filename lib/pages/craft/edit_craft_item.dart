@@ -1,78 +1,74 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_xampp_crud/main.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:hope_orphanage/main.dart';
+import 'package:hope_orphanage/model/user_model.dart';
+import 'package:hope_orphanage/widgets/elevated_button.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
-import 'Display_Data_with_image.dart';
-import 'Send_Data_with_image.dart';
+import '../../widgets/text_form_field.dart';
 
-class Edit_Data_with_image extends StatefulWidget {
-  final Datamodels data_user;
+class CraftEdit extends StatefulWidget {
+  final CraftModel craftUser;
 
-  Edit_Data_with_image({required this.data_user});
+  const CraftEdit({super.key, required this.craftUser});
 
   @override
-  _Edit_Data_with_imageState createState() => _Edit_Data_with_imageState();
+  State<CraftEdit> createState() => _CraftEditState();
 }
 
-class _Edit_Data_with_imageState extends State<Edit_Data_with_image> {
-  var _image;
+class _CraftEditState extends State<CraftEdit> {
+  dynamic _image;
   final picker = ImagePicker();
+  final craftKey = GlobalKey<FormState>();
 
+  TextEditingController craftID = TextEditingController();
   TextEditingController name = TextEditingController();
   TextEditingController price = TextEditingController();
-  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  TextEditingController description = TextEditingController();
 
-  Future choose_image_gallery() async {
-
+  Future chooseImageGallery() async {
     try {
-      //final image = await ImagePicker.pickImage(source: ImageSource.gallery);
-      final image = await picker.pickImage(source: ImageSource.gallery);
-
-
-       if (image == null) return;
-
-
-      final imageTemp = File(image.path);
-     print(imageTemp);
-      setState(() => this._image = imageTemp);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
-  }
-
-  Future choose_image_camera() async {
-    try {
-     // final image = await ImagePicker.pickImage(source: ImageSource.camera);
-      final image = await picker.pickImage(source: ImageSource.camera);
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
       if (image == null) return;
 
       final imageTemp = File(image.path);
 
-      setState(() => this._image = imageTemp);
+      setState(() => _image = imageTemp);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future chooseImageCamera() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+
+      if (image == null) return;
+
+      final imageTemp = File(image.path);
+
+      setState(() => _image = imageTemp);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
   }
 
   Future updateImage() async {
-    final uri = Uri.parse(
-        "http://$ip_address/internship_crud/update_data_with_image.php");
+    final uri = Uri.parse("http://$iPAddress/Hope/admin_edit_craft_item.php");
     var request = http.MultipartRequest('POST', uri);
-    request.fields['id'] =  widget.data_user.id.toString();
+    request.fields['id'] = widget.craftUser.id.toString();
     request.fields['price'] = price.text;
+    request.fields['craft_id'] = craftID.text;
     request.fields['name'] = name.text;
+    request.fields['description'] = description.text;
     print(request.fields['name']);
-    if(_image!=null)
-    {
+    if (_image != null) {
       var pic = await http.MultipartFile.fromPath("image", _image.path);
-      // var pic = await http.MultipartFile.fromPath("image", _image.path);
-      print("**********************************");
+      print("**********************");
       print(_image);
       request.files.add(pic);
     }
@@ -83,193 +79,150 @@ class _Edit_Data_with_imageState extends State<Edit_Data_with_image> {
       print('Image Uploded');
       price.clear();
       name.clear();
-
-      final snackBar = await SnackBar(
+      craftID.clear();
+      description.clear();
+      final snackBar = SnackBar(
         content: const Text('Updated Successfully!'),
         action: SnackBarAction(
           label: 'Ok',
-          onPressed: () {
-            //Navigator.pop(context);
-            // Some code to undo the change.
-          },
+          onPressed: () {},
         ),
       );
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
       print('Image Not Uploded');
     }
     setState(() {});
   }
-@override
+
+  @override
   void initState() {
-
-  name = TextEditingController(text: widget.data_user.name);
-  price = TextEditingController(text: widget.data_user.price);
-
-
-
-    // TODO: implement initState
+    name = TextEditingController(text: widget.craftUser.name);
+    price = TextEditingController(text: widget.craftUser.price);
+    craftID = TextEditingController(text: widget.craftUser.craftID);
+    description = TextEditingController(text: widget.craftUser.description);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
-          "Add craft shop item",
-          style: GoogleFonts.prompt(color: Colors.pink.shade300),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Icon(
-            Icons.arrow_back_rounded, color: Colors.pink.shade300,
-            size: 35, // add custom icons also
-          ),
+        title: const Text(
+          "EDIT CRAFT ITEM",
         ),
       ),
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formkey,
+      body: Form(
+        key: craftKey,
+        child: Center(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 40,
-                ),
-                child: TextFormField(
-                  controller: name,
-                  keyboardType: TextInputType.text,
-                  style: TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          color: Colors.black,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          color: Colors.black,
-                        ),
-                      ),
-                      hintText: "enter craft name",
-                      hintStyle: TextStyle(color: Colors.grey),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      )),
-                ),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TFF(
+                hintText: "Craft ID",
+                controller: craftID,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Craft ID cannot be empty";
+                  }
+                },
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                child: TextFormField(
-                  controller: price,
-                  keyboardType: TextInputType.number,
-                  style: TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          color: Colors.black,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          color: Colors.black,
-                        ),
-                      ),
-                      hintText: "Enter price",
-                      hintStyle: TextStyle(color: Colors.grey),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      )),
-                ),
+              TFF(
+                hintText: "Craft Item name",
+                controller: name,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Craft Item cannot be empty";
+                  }
+                },
               ),
-
+              TFF(
+                hintText: "Item price",
+                controller: price,
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Item price cannot be empty";
+                  }
+                },
+              ),
+              TFF(
+                hintText: "Item description",
+                controller: description,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Description cannot be empty";
+                  }
+                },
+              ),
+              const SizedBox(
+                height: 12,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "Choose Image",
-                    style: GoogleFonts.hindVadodara(
-                      fontSize: 20,
-                      color: Colors.cyan,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.green,
                     ),
                   ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.photo_outlined,
                       size: 35,
-                      color: Colors.cyan,
                     ),
                     onPressed: () {
-                      choose_image_gallery();
-
+                      chooseImageGallery();
                     },
                   ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.camera_alt_outlined,
                       size: 35,
-                      color: Colors.cyan,
                     ),
                     onPressed: () {
-                      choose_image_camera();
+                      chooseImageCamera();
                     },
                   ),
                 ],
               ),
               Center(
-                child: Container(
-                    height: 100,
-                    width: 200,
-                    //decoration: BoxDecoration(borderRadius: BorderRadius.circular(40),  color: Colors.grey,
-                    //),
-
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: _image != null
-                          ?
-                        Image.file(
-                        _image,
-                        fit: BoxFit.cover,
-                      )
-
-                          : Image.network(widget.data_user.image,
-                         fit: BoxFit.cover ,
-                      ),
-
-                    )
+                child: SizedBox(
+                  height: 100,
+                  width: 200,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: _image != null
+                        ? Image.file(
+                            _image,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.network(
+                            widget.craftUser.image,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: StadiumBorder(),
-                  backgroundColor: Colors.pink.shade200,
-                  padding: EdgeInsets.only(
-                      left: 110, right: 110, top: 20, bottom: 20),
-                ),
-                onPressed: () {
+              ELB(
+                onPressed: () async {
                   setState(() {});
-                  updateImage();
-                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Display_Data_with_image()));
+                  if (craftKey.currentState!.validate()) {
+                    await updateImage();
+                    if (!mounted) return;
+                    Navigator.pop(context);
+                  }
                 },
-                child: Text('Update'),
+                text: 'Update',
               ),
-
-
             ],
           ),
         ),

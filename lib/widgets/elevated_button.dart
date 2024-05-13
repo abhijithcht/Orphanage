@@ -2,36 +2,44 @@ import 'package:flutter/material.dart';
 
 class ELB extends StatelessWidget {
   final String text;
-  final Function onPressed;
+  final VoidCallback onPressed;
+  final Color background;
+  final Color foreground;
 
-  const ELB({super.key, required this.text, required this.onPressed});
+  const ELB({
+    Key? key,
+    required this.text,
+    required this.onPressed,
+    this.background = Colors.blue,
+    this.foreground = Colors.white,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () => onPressed(),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blue,
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 15,
-        ),
-        child: Center(
-          child: Text(
-            text,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25),
+      child: Row(
+        children: [
+          Expanded(
+            child: ElevatedButton(
+              onPressed: onPressed,
+              style: ElevatedButton.styleFrom(
+                foregroundColor: foreground,
+                backgroundColor: background,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 14,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
+                ),
+              ),
+              child: Text(
+                text,
+                style: const TextStyle(fontSize: 16),
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

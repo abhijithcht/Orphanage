@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hope_orphanage/pages/cart/my_orders.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../main.dart';
 
 class HomeUser extends StatefulWidget {
   const HomeUser({super.key});
@@ -13,6 +16,8 @@ class _HomeUserState extends State<HomeUser> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        //title: const Text('U S E R'),
+        title: Text('my id is : $uidUser'),
         actions: [
           IconButton(
             onPressed: () async {
@@ -26,40 +31,101 @@ class _HomeUserState extends State<HomeUser> {
           ),
         ],
       ),
-      drawer: const SafeArea(
+      drawer: SafeArea(
         child: Drawer(
           child: Column(
             children: [
-              ListTile(
-                title: Text('Donate money'),
+              UserAccountsDrawerHeader(
+                accountName: const Text('HOPE'),
+                accountEmail: const Text('ORPHANAGE'),
+                currentAccountPicture:
+                    Image.asset('assets/images/building.png'),
               ),
               ListTile(
-                title: Text('Book date for food donation'),
+                title: const Text('Donate money'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/donate');
+                },
               ),
               ListTile(
-                title: Text('Cancel food bookings'),
+                title: const Text('Donate Food'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/food');
+                },
               ),
               ListTile(
-                title: Text('Register events'),
+                title: const Text('Cancel food bookings'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/food-usercancel');
+                },
               ),
               ListTile(
-                title: Text('Cancel registration for events'),
+                title: const Text('Register events'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/reg-event');
+                },
               ),
               ListTile(
-                title: Text('Add items to cart'),
+                title: const Text('Cancel events'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/delete-userevent');
+                },
               ),
               ListTile(
-                title: Text('Remove items from cart'),
-              ),
-              ListTile(
-                title: Text('Buy craft products'),
-              ),
-              ListTile(
-                title: Text('Cancel order of craft products'),
+                title: Text('My Orders'),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MyOrders()));
+                },
               ),
             ],
           ),
         ),
+      ),
+      body: Column(
+        children: [
+          Image.asset('assets/images/3.jpg'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/view-donate');
+                },
+                child: const Text('View Donations'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/food-view');
+                },
+                child: const Text('View Food Donations'),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/view-event');
+                },
+                child: const Text('View Events'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/craft1');
+                },
+                child: const Text('View Crafts'),
+              ),
+            ],
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/cart');
+            },
+            child: const Text('View Cart'),
+          ),
+        ],
       ),
     );
   }

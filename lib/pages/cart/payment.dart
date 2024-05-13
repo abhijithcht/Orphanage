@@ -8,15 +8,17 @@ import '../../main.dart';
 import '../../widgets/elevated_button.dart';
 import '../../widgets/text_form_field.dart';
 
-class BuyNow extends StatefulWidget {
-  const BuyNow({super.key});
+class Payment extends StatefulWidget {
+  const Payment({super.key, required this.totalAmount});
+
+  final String totalAmount;
 
   @override
-  State<BuyNow> createState() => _BuyNowState();
+  State<Payment> createState() => _PaymentState();
 }
 
-class _BuyNowState extends State<BuyNow> {
-  final buyKey = GlobalKey<FormState>();
+class _PaymentState extends State<Payment> {
+  final payKey = GlobalKey<FormState>();
   TextEditingController _name = TextEditingController();
   TextEditingController _phone = TextEditingController();
   TextEditingController _total = TextEditingController();
@@ -30,7 +32,7 @@ class _BuyNowState extends State<BuyNow> {
   void initState() {
     _name = TextEditingController();
     _phone = TextEditingController();
-    _total = TextEditingController();
+    _total = TextEditingController(text: widget.totalAmount);
     _bank = TextEditingController();
     _account = TextEditingController();
     status = false;
@@ -90,7 +92,7 @@ class _BuyNowState extends State<BuyNow> {
         title: const Text('P A Y M E N T'),
       ),
       body: Form(
-        key: buyKey,
+        key: payKey,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -148,7 +150,7 @@ class _BuyNowState extends State<BuyNow> {
               ),
               ELB(
                 onPressed: () {
-                  if (buyKey.currentState!.validate()) {
+                  if (payKey.currentState!.validate()) {
                     setState(() {
                       payment();
                       //Navigator.pop(context);
