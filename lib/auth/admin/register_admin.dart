@@ -2,20 +2,17 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hope_orphanage/widgets/elevated_button.dart';
+import 'package:hope_orphanage/app_imports.dart';
 import 'package:http/http.dart' as http;
 
-import '../main.dart';
-import '../widgets/text_form_field.dart';
-
-class RegisterUser extends StatefulWidget {
-  const RegisterUser({super.key});
+class RegisterAdmin extends StatefulWidget {
+  const RegisterAdmin({super.key});
 
   @override
-  State<RegisterUser> createState() => _RegisterUserState();
+  State<RegisterAdmin> createState() => _RegisterAdminState();
 }
 
-class _RegisterUserState extends State<RegisterUser> {
+class _RegisterAdminState extends State<RegisterAdmin> {
   final registerKey = GlobalKey<FormState>();
   final TextEditingController _username = TextEditingController();
   final TextEditingController _email = TextEditingController();
@@ -34,7 +31,7 @@ class _RegisterUserState extends State<RegisterUser> {
   }
 
   Future submit() async {
-    var url = "http://$iPAddress/Hope/registration_user.php";
+    var url = "http://$iPAddress/Hope/registration_admin.php";
     Map mapedData = {
       'username': _username.text,
       'email': _email.text,
@@ -160,7 +157,7 @@ class _RegisterUserState extends State<RegisterUser> {
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/login1');
+                  Navigator.pushReplacementNamed(context, '/login2');
                 },
                 child: const Text('Already an User? Login'),
               ),

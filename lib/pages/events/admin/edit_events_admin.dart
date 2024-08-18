@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hope_orphanage/model/user_model.dart';
-import 'package:hope_orphanage/widgets/text_form_field.dart';
+import 'package:hope_orphanage/app_imports.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-
-import '../../main.dart';
 
 class EventEdit extends StatefulWidget {
   const EventEdit({super.key, required this.eventUser});
@@ -66,8 +63,8 @@ class _EventEditState extends State<EventEdit> {
   }
 
   update() async {
-    final response = await http
-        .post(Uri.parse("http://$iPAddress/Hope/admin_edit_event.php"), body: {
+    final response =
+        await http.post(Uri.parse("http://$iPAddress/Hope/admin_edit_event.php"), body: {
       "id": widget.eventUser.id.toString(),
       'name': _eventName.text.trim(),
       'event_date': _eventDate.text.trim(),

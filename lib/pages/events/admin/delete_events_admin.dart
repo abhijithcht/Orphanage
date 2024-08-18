@@ -1,20 +1,17 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:hope_orphanage/pages/events/edit_events_admin.dart';
+import 'package:hope_orphanage/app_imports.dart';
 import 'package:http/http.dart' as http;
 
-import '../../main.dart';
-import '../../model/user_model.dart';
-
-class EventViewUser extends StatefulWidget {
-  const EventViewUser({super.key});
+class EventView1 extends StatefulWidget {
+  const EventView1({super.key});
 
   @override
-  State<EventViewUser> createState() => _EventViewUserState();
+  State<EventView1> createState() => _EventView1State();
 }
 
-class _EventViewUserState extends State<EventViewUser> {
+class _EventView1State extends State<EventView1> {
   Future<List<EventModel>> getRequest() async {
     String url = "http://$iPAddress/Hope/admin_event_display.php";
     final response = await http.get(Uri.parse(url));
@@ -120,24 +117,23 @@ class _EventViewUserState extends State<EventViewUser> {
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                        title: const Text("Confirm Deletion"),
-                                        content: const Text(
-                                            "Are you sure you want to delete this event?"),
+                                        title: Text("Confirm Deletion"),
+                                        content:
+                                            Text("Are you sure you want to delete this event?"),
                                         actions: [
                                           TextButton(
                                             onPressed: () {
                                               Navigator.of(context).pop();
                                             },
-                                            child: const Text("Cancel"),
+                                            child: Text("Cancel"),
                                           ),
                                           TextButton(
                                             onPressed: () {
-                                              deleteData(
-                                                  snapshot.data![index].id);
+                                              deleteData(snapshot.data![index].id);
                                               Navigator.of(context).pop();
                                               setState(() {});
                                             },
-                                            child: const Text("Delete"),
+                                            child: Text("Delete"),
                                           ),
                                         ],
                                       );

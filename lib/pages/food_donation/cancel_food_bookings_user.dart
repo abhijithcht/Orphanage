@@ -1,11 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hope_orphanage/app_imports.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../main.dart';
-import '../../model/user_model.dart';
 
 class FoodUserCancel extends StatefulWidget {
   const FoodUserCancel({super.key});
@@ -19,8 +17,7 @@ class _FoodUserCancelState extends State<FoodUserCancel> {
     final shrdprfs = await SharedPreferences.getInstance();
     final ui = shrdprfs.getString("get_id");
 
-    String url =
-        "http://$iPAddress/Hope/cancel_food_donation_user.php?uid=${ui!}";
+    String url = "http://$iPAddress/Hope/cancel_food_donation_user.php?uid=${ui!}";
     final response = await http.get(Uri.parse(url));
     var responseData = jsonDecode(response.body);
 
@@ -112,8 +109,7 @@ class _FoodUserCancelState extends State<FoodUserCancel> {
                                           ),
                                           TextButton(
                                             onPressed: () {
-                                              deleteData(
-                                                  snapshot.data![index].id);
+                                              deleteData(snapshot.data![index].id);
                                               Navigator.of(context).pop();
                                               setState(() {});
                                             },

@@ -1,11 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:hope_orphanage/main.dart';
-import 'package:hope_orphanage/pages/craft/craft_details.dart';
+import 'package:hope_orphanage/app_imports.dart';
 import 'package:http/http.dart' as http;
-
-import '../../model/user_model.dart';
 
 class CraftShopAdmin extends StatefulWidget {
   const CraftShopAdmin({super.key});

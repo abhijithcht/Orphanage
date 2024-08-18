@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hope_orphanage/pages/cart/my_orders.dart';
+import 'package:hope_orphanage/app_imports.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../main.dart';
 
 class HomeUser extends StatefulWidget {
   const HomeUser({super.key});
@@ -21,8 +19,7 @@ class _HomeUserState extends State<HomeUser> {
         actions: [
           IconButton(
             onPressed: () async {
-              final SharedPreferences shaPre =
-                  await SharedPreferences.getInstance();
+              final SharedPreferences shaPre = await SharedPreferences.getInstance();
               shaPre.remove("get_id");
 
               if (context.mounted) {
@@ -40,8 +37,7 @@ class _HomeUserState extends State<HomeUser> {
               UserAccountsDrawerHeader(
                 accountName: const Text('HOPE'),
                 accountEmail: const Text('ORPHANAGE'),
-                currentAccountPicture:
-                    Image.asset('assets/images/building.png'),
+                currentAccountPicture: Image.asset('assets/images/building.png'),
               ),
               ListTile(
                 title: const Text('Donate money'),
@@ -76,8 +72,7 @@ class _HomeUserState extends State<HomeUser> {
               ListTile(
                 title: Text('My Orders'),
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MyOrders()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MyOrders()));
                 },
               ),
             ],

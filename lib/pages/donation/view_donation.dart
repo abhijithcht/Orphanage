@@ -1,10 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hope_orphanage/app_imports.dart';
 import 'package:http/http.dart' as http;
-
-import '../../main.dart';
-import '../../model/user_model.dart';
 
 class DonationView extends StatefulWidget {
   const DonationView({super.key});
@@ -44,8 +42,7 @@ class _DonationViewState extends State<DonationView> {
       ),
       body: FutureBuilder(
         future: getRequest(),
-        builder:
-            (BuildContext ctx, AsyncSnapshot<List<DonationModel>> snapshot) {
+        builder: (BuildContext ctx, AsyncSnapshot<List<DonationModel>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(

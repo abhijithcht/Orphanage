@@ -2,13 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hope_orphanage/main.dart';
-import 'package:hope_orphanage/model/user_model.dart';
-import 'package:hope_orphanage/widgets/elevated_button.dart';
+import 'package:hope_orphanage/app_imports.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-
-import '../../widgets/text_form_field.dart';
 
 class CraftEdit extends StatefulWidget {
   final CraftModel craftUser;

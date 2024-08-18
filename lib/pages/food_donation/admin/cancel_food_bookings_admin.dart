@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:hope_orphanage/app_imports.dart';
 import 'package:http/http.dart' as http;
 
-class FoodView extends StatefulWidget {
-  const FoodView({super.key});
+class FoodCancel extends StatefulWidget {
+  const FoodCancel({super.key});
 
   @override
-  State<FoodView> createState() => _FoodViewState();
+  State<FoodCancel> createState() => _FoodCancelState();
 }
 
-class _FoodViewState extends State<FoodView> {
+class _FoodCancelState extends State<FoodCancel> {
   Future<List<FoodModel>> getRequest() async {
     String url = "http://$iPAddress/Hope/user_food_donation_display.php";
     final response = await http.get(Uri.parse(url));
@@ -28,6 +28,17 @@ class _FoodViewState extends State<FoodView> {
       foods.add(food);
     }
     return foods;
+  }
+
+  Future<void> deleteData(String id) async {
+    String url = "http://$iPAddress/Hope/admin_delete_food_bookings.php";
+    var res = await http.post(Uri.parse(url), body: {
+      "id": id,
+    });
+    var response = jsonDecode(res.body);
+    if (response["success"] == "true") {
+      print('success');
+    }
   }
 
   @override
@@ -76,6 +87,37 @@ class _FoodViewState extends State<FoodView> {
                               title: Text(snapshot.data![index].donor),
                               leading: Text(snapshot.data![index].food),
                               subtitle: Text(snapshot.data![index].date),
+                              trailing: IconButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text("Confirm Deletion"),
+                                        content: const Text(
+                                            "Are you sure you want to delete this craft?"),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text("Cancel"),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              deleteData(snapshot.data![index].id);
+                                              Navigator.of(context).pop();
+                                              setState(() {});
+                                            },
+                                            child: const Text("Delete"),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                icon: const Icon(Icons.delete),
+                              ),
                             ),
                           ),
                         ],

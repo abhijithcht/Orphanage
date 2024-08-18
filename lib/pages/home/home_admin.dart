@@ -17,8 +17,7 @@ class _HomeAdminState extends State<HomeAdmin> {
         actions: [
           IconButton(
             onPressed: () async {
-              final SharedPreferences shaPre =
-                  await SharedPreferences.getInstance();
+              final SharedPreferences shaPre = await SharedPreferences.getInstance();
               shaPre.remove("get_id");
 
               if (context.mounted) {
@@ -36,8 +35,7 @@ class _HomeAdminState extends State<HomeAdmin> {
               UserAccountsDrawerHeader(
                 accountName: const Text('HOPE'),
                 accountEmail: const Text('ORPHANAGE'),
-                currentAccountPicture:
-                    Image.asset('assets/images/building.png'),
+                currentAccountPicture: Image.asset('assets/images/building.png'),
               ),
               ListTile(
                 title: const Text('Add Events'),

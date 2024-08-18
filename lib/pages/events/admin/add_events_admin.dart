@@ -1,21 +1,18 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hope_orphanage/app_imports.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-import '../../main.dart';
-import '../../widgets/elevated_button.dart';
-import '../../widgets/text_form_field.dart';
-
-class EventRegister extends StatefulWidget {
-  const EventRegister({super.key});
+class EventAdd extends StatefulWidget {
+  const EventAdd({super.key});
 
   @override
-  State<EventRegister> createState() => _EventRegisterState();
+  State<EventAdd> createState() => _EventAddState();
 }
 
-class _EventRegisterState extends State<EventRegister> {
+class _EventAddState extends State<EventAdd> {
   final eventkey = GlobalKey<FormState>();
   final TextEditingController _eventName = TextEditingController();
   final TextEditingController _eventDate = TextEditingController();
@@ -68,44 +65,62 @@ class _EventRegisterState extends State<EventRegister> {
   }
 
   Future<void> submit() async {
-    var url = "http://$iPAddress/Hope/user_event_registration.php";
+    if (!mounted) {
+      // Check if the widget is still in the tree before calling setState
+      return;
+    }
+
+    var url = "http://$iPAddress/Hope/event_registration.php";
     Map<String, String> mapedData = {
       'name': _eventName.text.trim(),
       'event_date': _eventDate.text.trim(),
       'event_time': _eventTime.text.trim(),
       'description': _description.text.trim(),
-      'uid': uidUser,
+      'uid': 'admin',
     };
-    http.Response response = await http.post(Uri.parse(url), body: mapedData);
-    if (response.body.isEmpty) {
-      if (mounted) {
-        setState(() {
-          status = false;
-          message = 'Empty response from the server.';
-        });
-      }
-    } else {
-      var data = jsonDecode(response.body);
-      var responseMessage = data["message"];
-      var responseError = data["error"];
-      if (responseError) {
+
+    try {
+      http.Response response = await http.post(Uri.parse(url), body: mapedData);
+
+      if (response.body.isEmpty) {
         if (mounted) {
           setState(() {
             status = false;
-            message = responseMessage;
+            message = 'Empty response from the server.';
           });
         }
       } else {
-        _eventName.clear();
-        _description.clear();
-        _eventDate.clear();
-        _eventTime.clear();
-        if (mounted) {
-          setState(() {
-            status = true;
-            message = responseMessage;
-          });
+        var data = jsonDecode(response.body);
+        var responseMessage = data["message"];
+        var responseError = data["error"];
+        if (responseError) {
+          if (mounted) {
+            setState(() {
+              status = false;
+              message = responseMessage;
+            });
+          }
+        } else {
+          _eventName.clear();
+          _description.clear();
+          _eventDate.clear();
+          _eventTime.clear();
+          if (mounted) {
+            setState(() {
+              status = true;
+              message = responseMessage;
+            });
+          }
         }
+      }
+    } on FormatException catch (e) {
+      print('Error decoding JSON: $e');
+
+      if (mounted) {
+        setState(() {
+          status = false;
+          message = 'Check mapped data.';
+        });
       }
     }
   }

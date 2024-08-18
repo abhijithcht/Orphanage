@@ -1,24 +1,23 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:hope_orphanage/pages/events/edit_events_admin.dart';
+import 'package:hope_orphanage/app_imports.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../main.dart';
-import '../../model/user_model.dart';
-
-class EventView1 extends StatefulWidget {
-  const EventView1({super.key});
+class EventDeleteUser extends StatefulWidget {
+  const EventDeleteUser({super.key});
 
   @override
-  State<EventView1> createState() => _EventView1State();
+  State<EventDeleteUser> createState() => _EventDeleteUserState();
 }
 
-class _EventView1State extends State<EventView1> {
+class _EventDeleteUserState extends State<EventDeleteUser> {
   Future<List<EventModel>> getRequest() async {
-    String url = "http://$iPAddress/Hope/admin_event_display.php";
+    final shrdprfs = await SharedPreferences.getInstance();
+    final ui = shrdprfs.getString("get_id");
+
+    String url = "http://$iPAddress/Hope/cancel_event_registration.php?uid=${ui!}";
     final response = await http.get(Uri.parse(url));
     var responseData = jsonDecode(response.body);
 
@@ -91,20 +90,6 @@ class _EventView1State extends State<EventView1> {
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
                               title: Text(snapshot.data![index].name),
-                              leading: IconButton(
-                                onPressed: () {
-                                  setState(() {});
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => EventEdit(
-                                        eventUser: snapshot.data![index],
-                                      ),
-                                    ),
-                                  );
-                                },
-                                icon: const Icon(Icons.edit),
-                              ),
                               subtitle: Row(
                                 children: [
                                   Text(
@@ -122,24 +107,22 @@ class _EventView1State extends State<EventView1> {
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                        title: Text("Confirm Deletion"),
-                                        content: Text(
+                                        title: const Text("Confirm Deletion"),
+                                        content: const Text(
                                             "Are you sure you want to delete this event?"),
                                         actions: [
                                           TextButton(
                                             onPressed: () {
                                               Navigator.of(context).pop();
                                             },
-                                            child: Text("Cancel"),
+                                            child: const Text("Cancel"),
                                           ),
                                           TextButton(
                                             onPressed: () {
-                                              deleteData(
-                                                  snapshot.data![index].id);
+                                              deleteData(snapshot.data![index].id);
                                               Navigator.of(context).pop();
-                                              setState(() {});
                                             },
-                                            child: Text("Delete"),
+                                            child: const Text("Delete"),
                                           ),
                                         ],
                                       );

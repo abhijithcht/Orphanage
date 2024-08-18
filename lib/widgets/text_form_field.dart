@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TFF extends StatelessWidget {
   final TextEditingController controller;
   final dynamic validator;
   final String hintText;
   final TextInputType keyboardType;
-  final dynamic onTap;
-  final dynamic inputFormatters;
-  final dynamic textInputAction;
-  final dynamic textCapitalization;
+  final VoidCallback? onTap;
+  final List<TextInputFormatter>? inputFormatters;
+  final TextInputAction textInputAction;
+  final TextCapitalization textCapitalization;
   final bool obscure;
-  final dynamic onSaved;
+  final void Function(String?)? onSaved;
   final bool focus;
 
   const TFF({
@@ -31,11 +32,7 @@ class TFF extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        left: 25,
-        right: 25,
-        top: 12,
-      ),
+      padding: const EdgeInsets.only(left: 25, right: 25, top: 12),
       child: Container(
         height: 60,
         decoration: BoxDecoration(

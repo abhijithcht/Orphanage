@@ -1,12 +1,9 @@
 import 'dart:convert';
-import 'package:hope_orphanage/pages/cart/payment.dart';
-import 'package:hope_orphanage/widgets/elevated_button.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
-import 'package:hope_orphanage/model/user_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../main.dart';
+import 'package:flutter/material.dart';
+import 'package:hope_orphanage/app_imports.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ViewCart extends StatefulWidget {
   const ViewCart({super.key});
@@ -70,8 +67,7 @@ class _ViewCartState extends State<ViewCart> {
         children: [
           FutureBuilder(
             future: getCartDetails(),
-            builder:
-                (BuildContext ctx, AsyncSnapshot<List<CartModel>> snapshot) {
+            builder: (BuildContext ctx, AsyncSnapshot<List<CartModel>> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                   child: CircularProgressIndicator(
@@ -111,8 +107,7 @@ class _ViewCartState extends State<ViewCart> {
                                     snapshot.data![index].image,
                                   ),
                                 ),
-                                subtitle: Text(
-                                    'Price: ${snapshot.data![index].price}'),
+                                subtitle: Text('Price: ${snapshot.data![index].price}'),
                                 trailing: IconButton(
                                   icon: Icon(Icons.close_rounded),
                                   onPressed: () {
@@ -121,8 +116,8 @@ class _ViewCartState extends State<ViewCart> {
                                       builder: (BuildContext context) {
                                         return AlertDialog(
                                           title: Text("Confirm Deletion"),
-                                          content: Text(
-                                              "Are you sure you want to delete this event?"),
+                                          content:
+                                              Text("Are you sure you want to delete this event?"),
                                           actions: [
                                             TextButton(
                                               onPressed: () {
@@ -132,8 +127,7 @@ class _ViewCartState extends State<ViewCart> {
                                             ),
                                             TextButton(
                                               onPressed: () {
-                                                deleteData(
-                                                    snapshot.data![index].cid);
+                                                deleteData(snapshot.data![index].cid);
                                                 Navigator.of(context).pop();
                                                 setState(() {});
                                               },
@@ -205,8 +199,7 @@ class _ViewCartState extends State<ViewCart> {
   String returnTotalAmount(List<CartModel> user) {
     double totalAmount = 0.0;
     for (int i = 0; i < user.length; i++) {
-      totalAmount = totalAmount +
-          (double.parse(user[i].price) * double.parse(user[i].qty));
+      totalAmount = totalAmount + (double.parse(user[i].price) * double.parse(user[i].qty));
     }
     return totalAmount.toString();
   }

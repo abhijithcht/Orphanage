@@ -1,11 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:hope_orphanage/main.dart';
+import 'package:hope_orphanage/app_imports.dart';
 import 'package:http/http.dart' as http;
-
-import '../../model/user_model.dart';
-import '../cart/add_to_cart.dart';
 
 class CraftShop extends StatefulWidget {
   const CraftShop({super.key});
@@ -98,8 +95,7 @@ class _CraftShopState extends State<CraftShop> {
                               craftID: '${snapshot.data[index].craftID}',
                               name: '${snapshot.data[index].name}',
                               price: '${snapshot.data[index].price}',
-                              description:
-                                  '${snapshot.data[index].description}',
+                              description: '${snapshot.data[index].description}',
                               image: snapshot.data[index].image,
                             ),
                           ),

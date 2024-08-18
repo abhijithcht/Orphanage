@@ -2,12 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:hope_orphanage/main.dart';
-import 'package:hope_orphanage/widgets/slidable.dart';
+import 'package:hope_orphanage/app_imports.dart';
 import 'package:http/http.dart' as http;
-
-import '../../model/user_model.dart';
-import 'edit_craft_item.dart';
 
 class CraftDelete extends StatefulWidget {
   const CraftDelete({super.key});
@@ -64,8 +60,8 @@ class _CraftDeleteState extends State<CraftDelete> {
                   builder: (BuildContext context) {
                     return AlertDialog(
                       title: Text('INFO'),
-                      content: Text(
-                          'To update or delete the items swipe to the right on the tiles.'),
+                      content:
+                          Text('To update or delete the items swipe to the right on the tiles.'),
                       actions: [
                         TextButton(
                           onPressed: () {

@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:hope_orphanage/auth/login_user.dart';
-import 'package:hope_orphanage/main.dart';
-import 'package:hope_orphanage/pages/home/home_user.dart';
+import 'package:hope_orphanage/app_imports.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 dynamic sessionUserKey;
@@ -23,13 +21,11 @@ class _SplashUserState extends State<SplashUser> {
         sessionUserKey == null
             ? Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => const LoginUser()),
+                MaterialPageRoute(builder: (BuildContext context) => const LoginUser()),
               )
             : Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => const HomeUser()),
+                MaterialPageRoute(builder: (BuildContext context) => const HomeUser()),
               );
       });
     });

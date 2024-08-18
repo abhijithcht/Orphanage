@@ -1,13 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:hope_orphanage/widgets/elevated_button.dart';
-import 'package:hope_orphanage/widgets/text_form_field.dart';
+import 'package:hope_orphanage/app_imports.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../main.dart';
-import '../widgets/snackbar.dart';
 
 class LoginUser extends StatefulWidget {
   const LoginUser({super.key});
@@ -46,8 +42,7 @@ class _LoginUserState extends State<LoginUser> {
       var data = json.decode(response.body);
       if (data != null) {
         for (var singleUser in data) {
-          final SharedPreferences shaPre =
-              await SharedPreferences.getInstance();
+          final SharedPreferences shaPre = await SharedPreferences.getInstance();
           await shaPre.setString('get_id', singleUser['id']);
           uidUser = singleUser["id"];
           getUserID();

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hope_orphanage/widgets/elevated_button.dart';
+import 'package:hope_orphanage/app_imports.dart';
 
 class ChoiceScreen extends StatefulWidget {
   const ChoiceScreen({super.key});
@@ -20,21 +20,12 @@ class _ChoiceScreenState extends State<ChoiceScreen> {
         children: [
           ELB(
             text: 'USER',
-            onPressed: () {
-              Navigator.pushNamed(context, '/splash1');
-            },
+            onPressed: () => Navigator.pushNamed(context, Routes.splash1),
           ),
-          const SizedBox(
-            height: 12,
-          ),
+          const SizedBox(height: 12),
           ELB(
             text: 'ADMIN',
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                '/splash2',
-              );
-            },
+            onPressed: () => Navigator.pushNamed(context, Routes.splash2),
           ),
         ],
       ),

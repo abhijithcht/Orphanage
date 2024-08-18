@@ -1,8 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:hope_orphanage/main.dart';
-import 'package:hope_orphanage/model/user_model.dart';
+import 'package:hope_orphanage/app_imports.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -91,20 +90,14 @@ class _MyOrdersState extends State<MyOrders> {
                                   children: [
                                     Card(
                                       child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.height /
-                                                5,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        padding:
-                                            EdgeInsets.fromLTRB(10, 15, 50, 15),
+                                        height: MediaQuery.of(context).size.height / 5,
+                                        width: MediaQuery.of(context).size.width,
+                                        padding: EdgeInsets.fromLTRB(10, 15, 50, 15),
                                         child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
+                                              borderRadius: BorderRadius.circular(8.0),
                                               child: Image.network(
                                                 snapshot.data[index].image,
                                                 height: 100,
@@ -116,8 +109,7 @@ class _MyOrdersState extends State<MyOrders> {
                                               width: 20,
                                             ),
                                             Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   "Name: ${snapshot.data[index].name}",

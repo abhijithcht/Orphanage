@@ -1,26 +1,19 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hope_orphanage/app_imports.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../main.dart';
-import '../../model/user_model.dart';
-
-class EventDeleteUser extends StatefulWidget {
-  const EventDeleteUser({super.key});
+class EventView2 extends StatefulWidget {
+  const EventView2({super.key});
 
   @override
-  State<EventDeleteUser> createState() => _EventDeleteUserState();
+  State<EventView2> createState() => _EventView2State();
 }
 
-class _EventDeleteUserState extends State<EventDeleteUser> {
+class _EventView2State extends State<EventView2> {
   Future<List<EventModel>> getRequest() async {
-    final shrdprfs = await SharedPreferences.getInstance();
-    final ui = shrdprfs.getString("get_id");
-
-    String url =
-        "http://$iPAddress/Hope/cancel_event_registration.php?uid=${ui!}";
+    String url = "http://$iPAddress/Hope/admin_event_display.php";
     final response = await http.get(Uri.parse(url));
     var responseData = jsonDecode(response.body);
 
@@ -36,17 +29,6 @@ class _EventDeleteUserState extends State<EventDeleteUser> {
       events.add(event);
     }
     return events;
-  }
-
-  Future<void> deleteData(String id) async {
-    String url = "http://$iPAddress/Hope/event_delete.php";
-    var res = await http.post(Uri.parse(url), body: {
-      "id": id,
-    });
-    var response = jsonDecode(res.body);
-    if (response["success"] == "true") {
-      print('success');
-    }
   }
 
   @override
@@ -103,37 +85,6 @@ class _EventDeleteUserState extends State<EventDeleteUser> {
                                   ),
                                   Text(snapshot.data![index].eventTime),
                                 ],
-                              ),
-                              trailing: IconButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: const Text("Confirm Deletion"),
-                                        content: const Text(
-                                            "Are you sure you want to delete this event?"),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text("Cancel"),
-                                          ),
-                                          TextButton(
-                                            onPressed: () {
-                                              deleteData(
-                                                  snapshot.data![index].id);
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text("Delete"),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                },
-                                icon: const Icon(Icons.delete),
                               ),
                             ),
                           ),

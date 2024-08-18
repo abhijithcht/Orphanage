@@ -2,13 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hope_orphanage/main.dart';
-import 'package:hope_orphanage/widgets/snackbar.dart';
+import 'package:hope_orphanage/app_imports.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-
-import '../../widgets/elevated_button.dart';
-import '../../widgets/text_form_field.dart';
 
 class CraftAdd extends StatefulWidget {
   const CraftAdd({super.key});

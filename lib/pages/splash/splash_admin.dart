@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hope_orphanage/auth/login_admin.dart';
+import 'package:hope_orphanage/auth/admin/login_admin.dart';
 import 'package:hope_orphanage/pages/home/home_admin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-dynamic sessionKey;
+dynamic sessionAdminKey;
 
 class SplashAdmin extends StatefulWidget {
   const SplashAdmin({super.key});
@@ -20,15 +20,11 @@ class _SplashAdminState extends State<SplashAdmin> {
   void initState() {
     getValidationData().whenComplete(() async {
       Timer(const Duration(milliseconds: 500), () {
-        sessionKey == null
+        sessionAdminKey == null
             ? Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => const LoginAdmin()))
+                context, MaterialPageRoute(builder: (BuildContext context) => const LoginAdmin()))
             : Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => const HomeAdmin()));
+                context, MaterialPageRoute(builder: (BuildContext context) => const HomeAdmin()));
       });
     });
     setState(() {});
@@ -39,10 +35,10 @@ class _SplashAdminState extends State<SplashAdmin> {
     SharedPreferences shaPre = await SharedPreferences.getInstance();
     var obtainedEmail = shaPre.getString('get_id');
     setState(() {
-      sessionKey = obtainedEmail;
+      sessionAdminKey = obtainedEmail;
     });
     if (kDebugMode) {
-      print("this is session value $sessionKey");
+      print("this is session value $sessionAdminKey");
     }
   }
 

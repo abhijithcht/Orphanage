@@ -1,39 +1,38 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hope_orphanage/app_imports.dart';
 import 'package:http/http.dart' as http;
 
-import '../../main.dart';
-import '../../model/user_model.dart';
-
-class FoodCancel extends StatefulWidget {
-  const FoodCancel({super.key});
+class EventViewUser extends StatefulWidget {
+  const EventViewUser({super.key});
 
   @override
-  State<FoodCancel> createState() => _FoodCancelState();
+  State<EventViewUser> createState() => _EventViewUserState();
 }
 
-class _FoodCancelState extends State<FoodCancel> {
-  Future<List<FoodModel>> getRequest() async {
-    String url = "http://$iPAddress/Hope/user_food_donation_display.php";
+class _EventViewUserState extends State<EventViewUser> {
+  Future<List<EventModel>> getRequest() async {
+    String url = "http://$iPAddress/Hope/admin_event_display.php";
     final response = await http.get(Uri.parse(url));
     var responseData = jsonDecode(response.body);
 
-    List<FoodModel> foods = [];
+    List<EventModel> events = [];
     for (var singleUser in responseData) {
-      FoodModel food = FoodModel(
+      EventModel event = EventModel(
         id: singleUser["id"].toString(),
-        date: singleUser["date"].toString(),
-        donor: singleUser["donor"].toString(),
-        food: singleUser["food"].toString(),
+        name: singleUser["name"].toString(),
+        eventDate: singleUser["event_date"].toString(),
+        eventTime: singleUser["event_time"].toString(),
+        description: singleUser["description"].toString(),
       );
-      foods.add(food);
+      events.add(event);
     }
-    return foods;
+    return events;
   }
 
   Future<void> deleteData(String id) async {
-    String url = "http://$iPAddress/Hope/admin_delete_food_bookings.php";
+    String url = "http://$iPAddress/Hope/event_delete.php";
     var res = await http.post(Uri.parse(url), body: {
       "id": id,
     });
@@ -48,12 +47,12 @@ class _FoodCancelState extends State<FoodCancel> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'F O O D -  D O N A T I O N S',
+          'E V E N T S',
         ),
       ),
       body: FutureBuilder(
         future: getRequest(),
-        builder: (BuildContext ctx, AsyncSnapshot<List<FoodModel>> snapshot) {
+        builder: (BuildContext ctx, AsyncSnapshot<List<EventModel>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(
@@ -67,7 +66,7 @@ class _FoodCancelState extends State<FoodCancel> {
             );
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(
-              child: Text('No data available.'),
+              child: Text('No event data available.'),
             );
           } else {
             return ListView.builder(
@@ -86,9 +85,32 @@ class _FoodCancelState extends State<FoodCancel> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ListTile(
-                              title: Text(snapshot.data![index].donor),
-                              leading: Text(snapshot.data![index].food),
-                              subtitle: Text(snapshot.data![index].date),
+                              title: Text(snapshot.data![index].name),
+                              leading: IconButton(
+                                onPressed: () {
+                                  setState(() {});
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => EventEdit(
+                                        eventUser: snapshot.data![index],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                icon: const Icon(Icons.edit),
+                              ),
+                              subtitle: Row(
+                                children: [
+                                  Text(
+                                    snapshot.data![index].eventDate,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(snapshot.data![index].eventTime),
+                                ],
+                              ),
                               trailing: IconButton(
                                 onPressed: () {
                                   showDialog(
@@ -97,7 +119,7 @@ class _FoodCancelState extends State<FoodCancel> {
                                       return AlertDialog(
                                         title: const Text("Confirm Deletion"),
                                         content: const Text(
-                                            "Are you sure you want to delete this craft?"),
+                                            "Are you sure you want to delete this event?"),
                                         actions: [
                                           TextButton(
                                             onPressed: () {
@@ -107,8 +129,7 @@ class _FoodCancelState extends State<FoodCancel> {
                                           ),
                                           TextButton(
                                             onPressed: () {
-                                              deleteData(
-                                                  snapshot.data![index].id);
+                                              deleteData(snapshot.data![index].id);
                                               Navigator.of(context).pop();
                                               setState(() {});
                                             },
