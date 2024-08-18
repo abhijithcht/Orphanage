@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 ThemeData lightTheme = ThemeData(
   useMaterial3: true,
+  primarySwatch: Colors.blue,
+  primaryColor: Colors.blue,
   appBarTheme: const AppBarTheme(
     backgroundColor: Colors.blue,
     foregroundColor: Colors.black,
@@ -13,7 +15,6 @@ ThemeData lightTheme = ThemeData(
       color: Colors.black,
     ),
     iconTheme: IconThemeData(
-      weight: 800,
       size: 30,
     ),
   ),
@@ -36,7 +37,6 @@ ThemeData lightTheme = ThemeData(
     splashFactory: NoSplash.splashFactory,
     overlayColor: WidgetStateProperty.all(Colors.transparent),
   ),
-  primaryColor: Colors.indigoAccent,
   cardTheme: CardTheme(
     color: Colors.blue[100],
     clipBehavior: Clip.antiAlias,
@@ -66,5 +66,38 @@ ThemeData lightTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     indicatorColor: Colors.blue,
     backgroundColor: Colors.grey[200],
+  ),
+  textTheme: TextTheme(
+    bodyLarge: TextStyle(
+      color: Colors.black,
+      fontSize: 16,
+    ),
+    bodyMedium: TextStyle(
+      color: Colors.black54,
+      fontSize: 14,
+    ),
+    labelLarge: TextStyle(
+      color: Colors.white,
+      fontSize: 16,
+    ),
+    bodySmall: TextStyle(
+      color: Colors.black45,
+      fontSize: 12,
+    ),
+    titleLarge: TextStyle(
+      color: Colors.black,
+      fontSize: 32,
+      fontWeight: FontWeight.bold,
+    ),
+    titleMedium: TextStyle(
+      color: Colors.black,
+      fontSize: 28,
+      fontWeight: FontWeight.w600,
+    ),
+    titleSmall: TextStyle(
+      color: Colors.black,
+      fontSize: 24,
+      fontWeight: FontWeight.w500,
+    ),
   ),
 );
