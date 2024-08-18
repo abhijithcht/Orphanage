@@ -202,8 +202,9 @@ class _CraftAddState extends State<CraftAdd> {
                 onPressed: () async {
                   if (craftKey.currentState!.validate()) {
                     await uploadImage();
-                    if (!mounted) return;
-                    Navigator.pop(context);
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                    }
                   }
                 },
                 text: 'Submit',

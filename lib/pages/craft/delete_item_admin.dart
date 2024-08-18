@@ -10,7 +10,7 @@ import '../../model/user_model.dart';
 import 'edit_craft_item.dart';
 
 class CraftDelete extends StatefulWidget {
-  const CraftDelete({Key? key}) : super(key: key);
+  const CraftDelete({super.key});
 
   @override
   State<CraftDelete> createState() => _CraftDeleteState();

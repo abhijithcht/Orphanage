@@ -6,7 +6,7 @@ import 'package:hope_orphanage/main.dart';
 import 'package:hope_orphanage/pages/home/home_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-dynamic sessionKey;
+dynamic sessionUserKey;
 
 class SplashUser extends StatefulWidget {
   const SplashUser({super.key});
@@ -20,7 +20,7 @@ class _SplashUserState extends State<SplashUser> {
   void initState() {
     getValidationData().whenComplete(() async {
       Timer(const Duration(milliseconds: 500), () {
-        sessionKey == null
+        sessionUserKey == null
             ? Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -43,9 +43,9 @@ class _SplashUserState extends State<SplashUser> {
     SharedPreferences shaPre = await SharedPreferences.getInstance();
     var obtainedEmail = shaPre.getString('get_id');
     setState(() {
-      sessionKey = obtainedEmail;
+      sessionUserKey = obtainedEmail;
     });
-    print("this is session value $sessionKey");
+    print("this is session value $sessionUserKey");
   }
 
   @override

@@ -217,8 +217,9 @@ class _CraftEditState extends State<CraftEdit> {
                   setState(() {});
                   if (craftKey.currentState!.validate()) {
                     await updateImage();
-                    if (!mounted) return;
-                    Navigator.pop(context);
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                    }
                   }
                 },
                 text: 'Update',

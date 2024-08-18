@@ -24,8 +24,10 @@ class _HomeUserState extends State<HomeUser> {
               final SharedPreferences shaPre =
                   await SharedPreferences.getInstance();
               shaPre.remove("get_id");
-              if (!mounted) return;
-              Navigator.pushReplacementNamed(context, '/login1');
+
+              if (context.mounted) {
+                Navigator.pushReplacementNamed(context, '/login1');
+              }
             },
             icon: const Icon(Icons.logout_rounded),
           ),

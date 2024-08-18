@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
           labelColor: Colors.white,
           unselectedLabelColor: Colors.black,
           splashFactory: NoSplash.splashFactory,
-          overlayColor: MaterialStateProperty.all(Colors.transparent),
+          overlayColor: WidgetStateProperty.all(Colors.transparent),
         ),
         primaryColor: Colors.indigoAccent,
         cardTheme: CardTheme(

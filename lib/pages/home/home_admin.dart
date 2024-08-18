@@ -20,8 +20,10 @@ class _HomeAdminState extends State<HomeAdmin> {
               final SharedPreferences shaPre =
                   await SharedPreferences.getInstance();
               shaPre.remove("get_id");
-              if (!mounted) return;
-              Navigator.pushReplacementNamed(context, '/login2');
+
+              if (context.mounted) {
+                Navigator.pushReplacementNamed(context, '/login2');
+              }
             },
             icon: const Icon(Icons.logout_rounded),
           ),

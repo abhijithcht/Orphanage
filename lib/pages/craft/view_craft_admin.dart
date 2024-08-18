@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import '../../model/user_model.dart';
 
 class CraftShopAdmin extends StatefulWidget {
-  const CraftShopAdmin({Key? key}) : super(key: key);
+  const CraftShopAdmin({super.key});
 
   @override
   State<CraftShopAdmin> createState() => _CraftShopAdminState();

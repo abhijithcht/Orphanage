@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:hope_orphanage/main.dart';
 import 'package:hope_orphanage/model/user_model.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyOrders extends StatefulWidget {
@@ -121,13 +120,10 @@ class _MyOrdersState extends State<MyOrders> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "Name : " +
-                                                      snapshot.data[index].name,
+                                                  "Name: ${snapshot.data[index].name}",
                                                 ),
                                                 Text(
-                                                  "Price : " +
-                                                      snapshot
-                                                          .data[index].price,
+                                                  "Price: ${snapshot.data[index].price}",
                                                 ),
                                               ],
                                             ),

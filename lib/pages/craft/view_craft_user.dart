@@ -8,7 +8,7 @@ import '../../model/user_model.dart';
 import '../cart/add_to_cart.dart';
 
 class CraftShop extends StatefulWidget {
-  const CraftShop({Key? key}) : super(key: key);
+  const CraftShop({super.key});
 
   @override
   State<CraftShop> createState() => _CraftShopState();

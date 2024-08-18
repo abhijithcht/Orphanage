@@ -7,12 +7,12 @@ class ELB extends StatelessWidget {
   final Color foreground;
 
   const ELB({
-    Key? key,
+    super.key,
     required this.text,
     required this.onPressed,
     this.background = Colors.blue,
     this.foreground = Colors.white,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

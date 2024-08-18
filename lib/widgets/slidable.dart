@@ -8,12 +8,12 @@ class CustomSlidable extends StatelessWidget {
   final void Function(BuildContext) onPressed;
 
   const CustomSlidable({
-    Key? key,
+    super.key,
     required this.onPressed,
     this.backgroundColor = Colors.red,
     this.label = 'Delete',
     this.icon = Icons.delete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
