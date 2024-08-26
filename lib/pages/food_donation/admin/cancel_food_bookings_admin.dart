@@ -13,8 +13,7 @@ class FoodCancel extends StatefulWidget {
 
 class _FoodCancelState extends State<FoodCancel> {
   Future<List<FoodModel>> getRequest() async {
-    String url = "http://$iPAddress/Hope/user_food_donation_display.php";
-    final response = await http.get(Uri.parse(url));
+    final response = await http.get(Uri.parse(URL.viewFoodDonationUser));
     var responseData = jsonDecode(response.body);
 
     List<FoodModel> foods = [];
@@ -31,8 +30,7 @@ class _FoodCancelState extends State<FoodCancel> {
   }
 
   Future<void> deleteData(String id) async {
-    String url = "http://$iPAddress/Hope/admin_delete_food_bookings.php";
-    var res = await http.post(Uri.parse(url), body: {
+    var res = await http.post(Uri.parse(URL.deleteFoodBookingAdmin), body: {
       "id": id,
     });
     var response = jsonDecode(res.body);
@@ -105,7 +103,8 @@ class _FoodCancelState extends State<FoodCancel> {
                                           ),
                                           TextButton(
                                             onPressed: () {
-                                              deleteData(snapshot.data![index].id);
+                                              deleteData(
+                                                  snapshot.data![index].id);
                                               Navigator.of(context).pop();
                                               setState(() {});
                                             },

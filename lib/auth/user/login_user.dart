@@ -31,8 +31,7 @@ class _LoginUserState extends State<LoginUser> {
   }
 
   Future login() async {
-    var url = "http://$iPAddress/Hope/login_user.php";
-    var response = await http.post(Uri.parse(url), headers: {
+    var response = await http.post(Uri.parse(URL.loginUser), headers: {
       'Accept': "application/json"
     }, body: {
       'username': _username.text,
@@ -42,7 +41,8 @@ class _LoginUserState extends State<LoginUser> {
       var data = json.decode(response.body);
       if (data != null) {
         for (var singleUser in data) {
-          final SharedPreferences shaPre = await SharedPreferences.getInstance();
+          final SharedPreferences shaPre =
+              await SharedPreferences.getInstance();
           await shaPre.setString('get_id', singleUser['id']);
           uidUser = singleUser["id"];
           getUserID();

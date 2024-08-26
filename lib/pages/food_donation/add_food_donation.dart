@@ -46,7 +46,6 @@ class _FoodDonationState extends State<FoodDonation> {
   }
 
   Future submit() async {
-    var url = "http://$iPAddress/Hope/user_food_donation.php";
     Map mapedData = {
       'date': _date.text.trim(),
       'donor': _donor.text.trim(),
@@ -54,7 +53,8 @@ class _FoodDonationState extends State<FoodDonation> {
       'uid': uidUser,
     };
 
-    http.Response response = await http.post(Uri.parse(url), body: mapedData);
+    http.Response response =
+        await http.post(Uri.parse(URL.donateFoodUser), body: mapedData);
     try {
       if (response.body.isEmpty) {
         setState(() {

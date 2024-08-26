@@ -34,6 +34,7 @@ export 'pages/splash/splash_admin.dart';
 export 'pages/splash/splash_user.dart';
 export 'utils/constants/constants.dart';
 export 'utils/constants/routes.dart';
+export 'utils/constants/url.dart';
 export 'utils/theme/theme.dart';
 export 'widgets/elevated_button.dart';
 export 'widgets/page_transition.dart';

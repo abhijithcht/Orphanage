@@ -38,7 +38,6 @@ class _PaymentState extends State<Payment> {
   }
 
   Future<void> payment() async {
-    var url = "http://$iPAddress/Hope/payment.php";
     Map<String, String> mapedData = {
       'name': _name.text.trim(),
       'phone': _phone.text.trim(),
@@ -47,7 +46,8 @@ class _PaymentState extends State<Payment> {
       'total_amt': _total.text.trim(),
       'uid': uidUser,
     };
-    http.Response response = await http.post(Uri.parse(url), body: mapedData);
+    http.Response response =
+        await http.post(Uri.parse(URL.payment), body: mapedData);
     if (response.body.isEmpty) {
       if (mounted) {
         setState(() {

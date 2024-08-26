@@ -31,7 +31,6 @@ class _RegisterAdminState extends State<RegisterAdmin> {
   }
 
   Future submit() async {
-    var url = "http://$iPAddress/Hope/registration_admin.php";
     Map mapedData = {
       'username': _username.text,
       'email': _email.text,
@@ -39,7 +38,8 @@ class _RegisterAdminState extends State<RegisterAdmin> {
       'password': _password.text,
     };
 
-    http.Response response = await http.post(Uri.parse(url), body: mapedData);
+    http.Response response =
+        await http.post(Uri.parse(URL.registerAdmin), body: mapedData);
     var data = jsonDecode(response.body);
     var responseMessage = data["message"];
     var responseError = data["error"];

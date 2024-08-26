@@ -33,13 +33,13 @@ class _AddToCartState extends State<AddToCart> {
   );
 
   Future<void> addToCart() async {
-    var url = "http://$iPAddress/Hope/user_add_to_cart.php";
     Map<String, String> mapedData = {
       'craft_id': widget.craftID,
       'qty': qty.text,
       'uid': uidUser,
     };
-    http.Response response = await http.post(Uri.parse(url), body: mapedData);
+    http.Response response =
+        await http.post(Uri.parse(URL.addToCartUser), body: mapedData);
 
     if (response.body.isEmpty) {
       if (mounted) {

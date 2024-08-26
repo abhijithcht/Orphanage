@@ -65,7 +65,6 @@ class _EventRegisterState extends State<EventRegister> {
   }
 
   Future<void> submit() async {
-    var url = "http://$iPAddress/Hope/user_event_registration.php";
     Map<String, String> mapedData = {
       'name': _eventName.text.trim(),
       'event_date': _eventDate.text.trim(),
@@ -73,7 +72,8 @@ class _EventRegisterState extends State<EventRegister> {
       'description': _description.text.trim(),
       'uid': uidUser,
     };
-    http.Response response = await http.post(Uri.parse(url), body: mapedData);
+    http.Response response =
+        await http.post(Uri.parse(URL.eventRegisterUser), body: mapedData);
     if (response.body.isEmpty) {
       if (mounted) {
         setState(() {

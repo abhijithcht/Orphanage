@@ -18,8 +18,7 @@ class _LoginAdminState extends State<LoginAdmin> {
   final TextEditingController _password = TextEditingController();
 
   Future login() async {
-    var url = "http://$iPAddress/Hope/login_admin.php";
-    var response = await http.post(Uri.parse(url), headers: {
+    final response = await http.post(Uri.parse(URL.loginAdmin), headers: {
       'Accept': "application/json"
     }, body: {
       'username': _username.text,
@@ -29,7 +28,8 @@ class _LoginAdminState extends State<LoginAdmin> {
       var data = json.decode(response.body);
       if (data != null) {
         for (var singleUser in data) {
-          final SharedPreferences shaPre = await SharedPreferences.getInstance();
+          final SharedPreferences shaPre =
+              await SharedPreferences.getInstance();
           await shaPre.setString('get_id', singleUser['id']);
         }
         if (!mounted) return;

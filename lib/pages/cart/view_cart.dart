@@ -17,7 +17,7 @@ class _ViewCartState extends State<ViewCart> {
     final shrdprfs = await SharedPreferences.getInstance();
     final ui = shrdprfs.getString("get_id");
 
-    String url = "http://$iPAddress/Hope/user_view_cart.php?uid=${ui!}";
+    String url = "${URL.viewCartUser}${ui!}";
     final response = await http.get(Uri.parse(url));
     var responseData = jsonDecode(response.body);
 
@@ -39,8 +39,7 @@ class _ViewCartState extends State<ViewCart> {
   }
 
   Future deleteData(String id) async {
-    String url = "http://$iPAddress/Hope/user_cart_delete.php";
-    var res = await http.post(Uri.parse(url), body: {
+    var res = await http.post(Uri.parse(URL.deleteCartUser), body: {
       "id": id,
     });
     var response = jsonDecode(res.body);
@@ -67,7 +66,8 @@ class _ViewCartState extends State<ViewCart> {
         children: [
           FutureBuilder(
             future: getCartDetails(),
-            builder: (BuildContext ctx, AsyncSnapshot<List<CartModel>> snapshot) {
+            builder:
+                (BuildContext ctx, AsyncSnapshot<List<CartModel>> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                   child: CircularProgressIndicator(
@@ -107,7 +107,8 @@ class _ViewCartState extends State<ViewCart> {
                                     snapshot.data![index].image,
                                   ),
                                 ),
-                                subtitle: Text('Price: ${snapshot.data![index].price}'),
+                                subtitle: Text(
+                                    'Price: ${snapshot.data![index].price}'),
                                 trailing: IconButton(
                                   icon: Icon(Icons.close_rounded),
                                   onPressed: () {
@@ -116,8 +117,8 @@ class _ViewCartState extends State<ViewCart> {
                                       builder: (BuildContext context) {
                                         return AlertDialog(
                                           title: Text("Confirm Deletion"),
-                                          content:
-                                              Text("Are you sure you want to delete this event?"),
+                                          content: Text(
+                                              "Are you sure you want to delete this event?"),
                                           actions: [
                                             TextButton(
                                               onPressed: () {
@@ -127,7 +128,8 @@ class _ViewCartState extends State<ViewCart> {
                                             ),
                                             TextButton(
                                               onPressed: () {
-                                                deleteData(snapshot.data![index].cid);
+                                                deleteData(
+                                                    snapshot.data![index].cid);
                                                 Navigator.of(context).pop();
                                                 setState(() {});
                                               },
@@ -199,7 +201,8 @@ class _ViewCartState extends State<ViewCart> {
   String returnTotalAmount(List<CartModel> user) {
     double totalAmount = 0.0;
     for (int i = 0; i < user.length; i++) {
-      totalAmount = totalAmount + (double.parse(user[i].price) * double.parse(user[i].qty));
+      totalAmount = totalAmount +
+          (double.parse(user[i].price) * double.parse(user[i].qty));
     }
     return totalAmount.toString();
   }

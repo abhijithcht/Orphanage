@@ -13,8 +13,7 @@ class EventView2 extends StatefulWidget {
 
 class _EventView2State extends State<EventView2> {
   Future<List<EventModel>> getRequest() async {
-    String url = "http://$iPAddress/Hope/admin_event_display.php";
-    final response = await http.get(Uri.parse(url));
+    final response = await http.get(Uri.parse(URL.viewEventAdmin));
     var responseData = jsonDecode(response.body);
 
     List<EventModel> events = [];

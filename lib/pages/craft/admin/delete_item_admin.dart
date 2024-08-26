@@ -14,8 +14,7 @@ class CraftDelete extends StatefulWidget {
 
 class _CraftDeleteState extends State<CraftDelete> {
   Future<void> deleteData(String id) async {
-    String url = "http://$iPAddress/Hope/admin_craft_delete.php";
-    var res = await http.post(Uri.parse(url), body: {
+    var res = await http.post(Uri.parse(URL.deleteCraftAdmin), body: {
       "id": id,
     });
     var response = json.decode(res.body);
@@ -60,8 +59,8 @@ class _CraftDeleteState extends State<CraftDelete> {
                   builder: (BuildContext context) {
                     return AlertDialog(
                       title: Text('INFO'),
-                      content:
-                          Text('To update or delete the items swipe to the right on the tiles.'),
+                      content: Text(
+                          'To update or delete the items swipe to the right on the tiles.'),
                       actions: [
                         TextButton(
                           onPressed: () {

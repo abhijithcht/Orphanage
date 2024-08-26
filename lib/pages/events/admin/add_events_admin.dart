@@ -66,11 +66,9 @@ class _EventAddState extends State<EventAdd> {
 
   Future<void> submit() async {
     if (!mounted) {
-      // Check if the widget is still in the tree before calling setState
       return;
     }
 
-    var url = "http://$iPAddress/Hope/event_registration.php";
     Map<String, String> mapedData = {
       'name': _eventName.text.trim(),
       'event_date': _eventDate.text.trim(),
@@ -80,7 +78,8 @@ class _EventAddState extends State<EventAdd> {
     };
 
     try {
-      http.Response response = await http.post(Uri.parse(url), body: mapedData);
+      http.Response response =
+          await http.post(Uri.parse(URL.eventRegisterAdmin), body: mapedData);
 
       if (response.body.isEmpty) {
         if (mounted) {

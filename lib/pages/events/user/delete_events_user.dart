@@ -17,7 +17,7 @@ class _EventDeleteUserState extends State<EventDeleteUser> {
     final shrdprfs = await SharedPreferences.getInstance();
     final ui = shrdprfs.getString("get_id");
 
-    String url = "http://$iPAddress/Hope/cancel_event_registration.php?uid=${ui!}";
+    String url = "${URL.cancelEventAdmin}${ui!}";
     final response = await http.get(Uri.parse(url));
     var responseData = jsonDecode(response.body);
 
@@ -36,8 +36,7 @@ class _EventDeleteUserState extends State<EventDeleteUser> {
   }
 
   Future<void> deleteData(String id) async {
-    String url = "http://$iPAddress/Hope/event_delete.php";
-    var res = await http.post(Uri.parse(url), body: {
+    var res = await http.post(Uri.parse(URL.deleteEventAdmin), body: {
       "id": id,
     });
     var response = jsonDecode(res.body);
@@ -119,7 +118,8 @@ class _EventDeleteUserState extends State<EventDeleteUser> {
                                           ),
                                           TextButton(
                                             onPressed: () {
-                                              deleteData(snapshot.data![index].id);
+                                              deleteData(
+                                                  snapshot.data![index].id);
                                               Navigator.of(context).pop();
                                             },
                                             child: const Text("Delete"),

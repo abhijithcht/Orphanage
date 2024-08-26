@@ -17,7 +17,7 @@ class _FoodUserCancelState extends State<FoodUserCancel> {
     final shrdprfs = await SharedPreferences.getInstance();
     final ui = shrdprfs.getString("get_id");
 
-    String url = "http://$iPAddress/Hope/cancel_food_donation_user.php?uid=${ui!}";
+    String url = "${URL.cancelFoodDonationUser}${ui!}";
     final response = await http.get(Uri.parse(url));
     var responseData = jsonDecode(response.body);
 
@@ -35,8 +35,7 @@ class _FoodUserCancelState extends State<FoodUserCancel> {
   }
 
   Future<void> deleteData(String id) async {
-    String url = "http://$iPAddress/Hope/admin_delete_food_bookings.php";
-    var res = await http.post(Uri.parse(url), body: {
+    var res = await http.post(Uri.parse(URL.deleteFoodBookingAdmin), body: {
       "id": id,
     });
     var response = jsonDecode(res.body);
@@ -109,7 +108,8 @@ class _FoodUserCancelState extends State<FoodUserCancel> {
                                           ),
                                           TextButton(
                                             onPressed: () {
-                                              deleteData(snapshot.data![index].id);
+                                              deleteData(
+                                                  snapshot.data![index].id);
                                               Navigator.of(context).pop();
                                               setState(() {});
                                             },

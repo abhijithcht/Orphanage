@@ -32,7 +32,6 @@ class _DonationAddState extends State<DonationAdd> {
   }
 
   Future submit() async {
-    var url = "http://$iPAddress/Hope/user_money_donation.php";
     Map mapedData = {
       'name': _name.text.trim(),
       'place': _place.text.trim(),
@@ -42,7 +41,8 @@ class _DonationAddState extends State<DonationAdd> {
       'account': _account.text.trim(),
     };
 
-    http.Response response = await http.post(Uri.parse(url), body: mapedData);
+    http.Response response =
+        await http.post(Uri.parse(URL.donateMoneyUser), body: mapedData);
     try {
       if (response.body.isEmpty) {
         setState(() {

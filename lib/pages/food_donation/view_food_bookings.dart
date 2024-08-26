@@ -13,8 +13,7 @@ class FoodView extends StatefulWidget {
 
 class _FoodViewState extends State<FoodView> {
   Future<List<FoodModel>> getRequest() async {
-    String url = "http://$iPAddress/Hope/user_food_donation_display.php";
-    final response = await http.get(Uri.parse(url));
+    final response = await http.get(Uri.parse(URL.viewFoodDonationUser));
     var responseData = jsonDecode(response.body);
 
     List<FoodModel> foods = [];

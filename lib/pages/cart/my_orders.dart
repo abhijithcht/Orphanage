@@ -18,7 +18,7 @@ class _MyOrdersState extends State<MyOrders> {
   Future<List<CartModel>> getRequest() async {
     final sharedPrefs = await SharedPreferences.getInstance();
     final ui = sharedPrefs.getString("get_uid_user");
-    String url = "http://$iPAddress/Hope/Display_order_items.php?uid=${ui!}";
+    String url = "${URL.viewOrderedItems}${ui!}";
 
     final response = await http.get(Uri.parse(url));
 
@@ -90,14 +90,20 @@ class _MyOrdersState extends State<MyOrders> {
                                   children: [
                                     Card(
                                       child: Container(
-                                        height: MediaQuery.of(context).size.height / 5,
-                                        width: MediaQuery.of(context).size.width,
-                                        padding: EdgeInsets.fromLTRB(10, 15, 50, 15),
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                5,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        padding:
+                                            EdgeInsets.fromLTRB(10, 15, 50, 15),
                                         child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             ClipRRect(
-                                              borderRadius: BorderRadius.circular(8.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
                                               child: Image.network(
                                                 snapshot.data[index].image,
                                                 height: 100,
@@ -109,7 +115,8 @@ class _MyOrdersState extends State<MyOrders> {
                                               width: 20,
                                             ),
                                             Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   "Name: ${snapshot.data[index].name}",

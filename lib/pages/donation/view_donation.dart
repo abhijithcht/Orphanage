@@ -13,8 +13,7 @@ class DonationView extends StatefulWidget {
 
 class _DonationViewState extends State<DonationView> {
   Future<List<DonationModel>> getRequest() async {
-    String url = "http://$iPAddress/Hope/admin_donation.display.php";
-    final response = await http.get(Uri.parse(url));
+    final response = await http.get(Uri.parse(URL.viewDonationAdmin));
     var responseData = jsonDecode(response.body);
 
     List<DonationModel> donations = [];
@@ -42,7 +41,8 @@ class _DonationViewState extends State<DonationView> {
       ),
       body: FutureBuilder(
         future: getRequest(),
-        builder: (BuildContext ctx, AsyncSnapshot<List<DonationModel>> snapshot) {
+        builder:
+            (BuildContext ctx, AsyncSnapshot<List<DonationModel>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(

@@ -13,8 +13,7 @@ class EventView1 extends StatefulWidget {
 
 class _EventView1State extends State<EventView1> {
   Future<List<EventModel>> getRequest() async {
-    String url = "http://$iPAddress/Hope/admin_event_display.php";
-    final response = await http.get(Uri.parse(url));
+    final response = await http.get(Uri.parse(URL.viewEventAdmin));
     var responseData = jsonDecode(response.body);
 
     List<EventModel> events = [];
@@ -32,8 +31,7 @@ class _EventView1State extends State<EventView1> {
   }
 
   Future<void> deleteData(String id) async {
-    String url = "http://$iPAddress/Hope/event_delete.php";
-    var res = await http.post(Uri.parse(url), body: {
+    var res = await http.post(Uri.parse(URL.deleteEventAdmin), body: {
       "id": id,
     });
     var response = jsonDecode(res.body);
@@ -118,8 +116,8 @@ class _EventView1State extends State<EventView1> {
                                     builder: (BuildContext context) {
                                       return AlertDialog(
                                         title: Text("Confirm Deletion"),
-                                        content:
-                                            Text("Are you sure you want to delete this event?"),
+                                        content: Text(
+                                            "Are you sure you want to delete this event?"),
                                         actions: [
                                           TextButton(
                                             onPressed: () {
@@ -129,7 +127,8 @@ class _EventView1State extends State<EventView1> {
                                           ),
                                           TextButton(
                                             onPressed: () {
-                                              deleteData(snapshot.data![index].id);
+                                              deleteData(
+                                                  snapshot.data![index].id);
                                               Navigator.of(context).pop();
                                               setState(() {});
                                             },
